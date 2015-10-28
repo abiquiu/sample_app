@@ -34,7 +34,7 @@ describe "Authentication" do
       it { should have_selector('title', text: user.name) }
       
       it { should have_link('Users', href: users_path) }
-      it { should have_link('Profile', href: user_path(user)) }
+      it { should have_link('My Profile', href: user_path(user)) }
       it { should have_link('Settings', href: edit_user_path(user))}
       it { should have_link('Sign out', href: signout_path) }
       
@@ -67,9 +67,26 @@ describe "Authentication" do
         describe "after signing in" do
           
           it "should render the desired protected page" do
-            page.should have_selector('title', text: 'Edit user')
+            page.should have_selector('title', text: 'Update profile')
           end
         end
+        
+        describe "in the Microposts controller" do
+          describe "submitting to the create action" do
+            before { post microposts_path }
+            specify { response.should redirect_to(signin_path)}
+          end
+          
+          describe "submitting to the destroy action" do
+            before do
+              micropost = FactoryGirl.create(:micropost)
+              delete micropost_path(micropost)
+            end
+            specify {response.should redirect_to(signin_path)}
+          end
+          
+        end
+        
       end
       
       describe "in the Users controller" do
@@ -89,6 +106,8 @@ describe "Authentication" do
           it { should have_selector('title', text: 'Sign in')}
         end
       end
+      
+      
       
     end
     
