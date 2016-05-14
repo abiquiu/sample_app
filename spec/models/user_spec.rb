@@ -163,11 +163,10 @@ describe User do
   
   describe "micropost associations" do
     
-    before {@user.save}
+    before { @user.save }
     let!(:older_micropost) do
       FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
     end
-    
     let!(:newer_micropost) do
       FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
     end
@@ -188,7 +187,7 @@ describe User do
       let(:unfollowed_post) do
         FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
       end
-      let(:followed_user) { FactoryGirl.create(:user)}
+      let(:followed_user) { FactoryGirl.create(:user) }
       
       before do
         @user.follow!(followed_user)
